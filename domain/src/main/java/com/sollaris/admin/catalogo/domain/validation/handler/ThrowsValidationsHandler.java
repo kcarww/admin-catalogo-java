@@ -13,13 +13,19 @@ public class ThrowsValidationsHandler implements ValidationHandler {
     }
 
     @Override
-    public ValidationHandler append(ValidationHandler anError) {
-        return null;
+    public ValidationHandler append(final ValidationHandler anHandler) {
+        throw DomainException.with(anHandler.getErrors());
     }
 
     @Override
-    public ValidationHandler validate(Validation aValidation) {
-        return null;
+    public ValidationHandler validate(final Validation aValidation) {
+        try {
+            aValidation.validate();
+        } catch (final Exception ex) {
+            throw DomainException.with(new Error(ex.getMessage()));
+        }
+
+        return this;
     }
 
     @Override

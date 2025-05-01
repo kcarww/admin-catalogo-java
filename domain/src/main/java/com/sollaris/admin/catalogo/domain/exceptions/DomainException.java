@@ -1,8 +1,10 @@
 package com.sollaris.admin.catalogo.domain.exceptions;
 
+import com.sollaris.admin.catalogo.domain.validation.Error;
 import java.util.List;
 
-public class DomainException extends  RuntimeException{
+public class DomainException extends NoStacktraceException {
+
     private final List<Error> errors;
 
     private DomainException(final String aMessage, final List<Error> anErrors) {
@@ -19,6 +21,6 @@ public class DomainException extends  RuntimeException{
     }
 
     public List<Error> getErrors() {
-        return this.errors;
+        return errors;
     }
 }

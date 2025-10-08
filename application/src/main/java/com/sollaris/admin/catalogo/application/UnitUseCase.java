@@ -1,5 +1,5 @@
 package com.sollaris.admin.catalogo.application;
 
-public abstract class UnitUseCase {
+public abstract class UnitUseCase<IN> {
     public abstract void execute(IN anIn);
 }

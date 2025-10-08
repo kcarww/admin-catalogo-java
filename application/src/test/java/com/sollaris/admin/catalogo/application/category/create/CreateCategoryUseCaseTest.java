@@ -60,7 +60,7 @@ public class CreateCategoryUseCaseTest {
         final var actualOutput = useCase.execute(aCommand);
 
         Assertions.assertNotNull(actualOutput);
-        Assertions.assertNotNull(actualOutput.id());
+        Assertions.assertNotNull(actualOutput.get().id());
 
         Mockito.verify(categoryGateway, times(1))
                 .create(argThat(aCategory -> {
@@ -89,6 +89,7 @@ public class CreateCategoryUseCaseTest {
                 CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
 
         final var notification = useCase.execute(aCommand).getLeft();
+
 
         Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
         Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());

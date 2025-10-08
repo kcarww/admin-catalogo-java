@@ -8,6 +8,9 @@ import io.vavr.control.Either;
 
 import java.util.Objects;
 
+import static io.vavr.API.Left;
+import static io.vavr.API.Try;
+
 public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase{
 
     private final CategoryGateway categoryGateway;
@@ -27,10 +30,12 @@ public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase{
         final var aCategory = Category.newCategory(aName, aDescription, aIsActive);
         aCategory.validate(notification);
 
-        if (notification.hasErrors()) {
+        return notification.hasErrors() ? Left(notification) : create(aCategory);
+    }
 
-        }
-
-        return CreateCategoryOutput.from(this.categoryGateway.create(aCategory));
+    private Either<Notification, CreateCategoryOutput> create(final Category aCategory) {
+        return Try(() -> this.categoryGateway.create(aCategory))
+                .toEither()
+                .bimap(Notification::create, CreateCategoryOutput::from);
     }
 }
